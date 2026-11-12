@@ -37,7 +37,35 @@ jobs:
           echo "App did not start in time"; cat jetty.log; exit 1
 
       - name: End-to-end smoke test
-        run: bash scripts/smoke-test.sh http://localhost:8080
+        run: |
+          mkdir -p evidence
+          bash scripts/smoke-test.sh http://localhost:8080 | tee evidence/smoke-test.txt
+
+      - name: Concurrency test (30 students, 10 seats)
+        run: bash scripts/concurrency-test.sh http://localhost:8080 30 10 | tee evidence/concurrency-test.txt
+
+      - name: Latency test
+        run: bash scripts/perf-test.sh http://localhost:8080 200 | tee evidence/latency-test.txt
+
+      - name: Capture screenshots
+        run: |
+          mkdir -p /tmp/pw && cd /tmp/pw && npm init -y > /dev/null && npm install playwright > /dev/null
+          npx playwright install --with-deps chromium > /dev/null
+          cd "$GITHUB_WORKSPACE"
+          NODE_PATH=/tmp/pw/node_modules node scripts/screenshots.js http://localhost:8080 evidence/screenshots
+
+      - name: Collect unit-test reports
+        if: always()
+        run: |
+          mkdir -p evidence
+          cp target/surefire-reports/*.txt evidence/ 2>/dev/null || true
+
+      - name: Upload evidence (test output and screenshots)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence
+          path: evidence/
 
       - name: Show server log on failure
         if: failure()
