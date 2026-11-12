@@ -30,7 +30,7 @@ jobs:
       - name: Start the app (Jetty + embedded H2)
         run: |
           nohup mvn -B -Pdemo jetty:run > jetty.log 2>&1 &
-          for i in $(seq 1 60); do
+          for i in $(seq 1 90); do
             if curl -sf http://localhost:8080/login > /dev/null; then echo "App is up"; exit 0; fi
             sleep 2
           done

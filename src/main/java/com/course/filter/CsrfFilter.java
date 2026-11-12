@@ -4,6 +4,7 @@ import com.course.util.Flash;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -28,6 +29,16 @@ import java.util.Base64;
  */
 @WebFilter("/*")
 public class CsrfFilter implements Filter {
+
+    // Defined explicitly so the filter also runs on Servlet 3.1 containers (e.g. Jetty 9.4),
+    // where Filter.init/destroy are not default methods.
+    @Override
+    public void init(FilterConfig filterConfig) {
+    }
+
+    @Override
+    public void destroy() {
+    }
     public static final String ATTR = "csrfToken";
     public static final String PARAM = "_csrf";
     private static final SecureRandom RANDOM = new SecureRandom();

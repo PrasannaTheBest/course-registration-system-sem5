@@ -5,6 +5,7 @@ import com.course.util.Flash;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,16 @@ import java.io.IOException;
 /** Guards /student/* (any logged-in user) and /admin/* (admins only). */
 @WebFilter(urlPatterns = {"/student/*", "/admin/*"})
 public class AuthFilter implements Filter {
+
+    // Defined explicitly so the filter also runs on Servlet 3.1 containers (e.g. Jetty 9.4),
+    // where Filter.init/destroy are not default methods.
+    @Override
+    public void init(FilterConfig filterConfig) {
+    }
+
+    @Override
+    public void destroy() {
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
