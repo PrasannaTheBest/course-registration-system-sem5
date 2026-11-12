@@ -30,11 +30,16 @@ public class AppInitListener implements ServletContextListener {
             createTables();
             seed();
             event.getServletContext().log("Course registration: database ready.");
-        } catch (SQLException | IOException e) {
+        } catch (Exception e) {
             throw new IllegalStateException(
                     "Could not initialise the database. Check db.properties (url, user, password) "
                             + "and that MySQL is running: " + e.getMessage(), e);
         }
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent event) {
+        DBUtil.shutdown();
     }
 
     /** Runs the same start-up steps; also used by the tests. */

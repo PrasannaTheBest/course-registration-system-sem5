@@ -28,7 +28,7 @@ fs.mkdirSync(OUT, { recursive: true });
         await page.goto(BASE + '/login');
         await page.fill('#email', u.email);
         await page.fill('#password', u.password);
-        await page.click('button[type=submit]');
+        await page.click('main form button[type=submit]');
         await page.waitForLoadState('networkidle');
     };
     const logout = async () => {
@@ -47,14 +47,14 @@ fs.mkdirSync(OUT, { recursive: true });
     await page.fill('#password', STUDENT.password);
     await page.fill('#confirm', STUDENT.password);
     await shot('02-register', { wait: 700 });
-    await page.click('button[type=submit]');
+    await page.click('main form button[type=submit]');
     await page.waitForLoadState('networkidle');
 
     // 3. Login (with the "account created" message)
     await page.fill('#email', STUDENT.email);
     await page.fill('#password', STUDENT.password);
     await shot('03-login', { wait: 700 });
-    await page.click('button[type=submit]');
+    await page.click('main form button[type=submit]');
     await page.waitForLoadState('networkidle');
 
     // 4. Course catalogue
@@ -96,7 +96,7 @@ fs.mkdirSync(OUT, { recursive: true });
     await page.fill('#instructor', 'Dr. Meera Nair');
     await page.fill('#description', 'Supervised and unsupervised learning, model evaluation and basic neural networks.');
     await shot('11-admin-add-course', { wait: 700 });
-    await page.click('button[type=submit]');
+    await page.click('main form button[type=submit]');
     await page.waitForLoadState('networkidle');
     await shot('12-admin-course-added');
 
@@ -113,7 +113,7 @@ fs.mkdirSync(OUT, { recursive: true });
     await mp.goto(BASE + '/login');
     await mp.fill('#email', STUDENT.email);
     await mp.fill('#password', STUDENT.password);
-    await mp.click('button[type=submit]');
+    await mp.click('main form button[type=submit]');
     await mp.waitForLoadState('networkidle');
     await mp.waitForTimeout(1800);
     await mp.screenshot({ path: `${OUT}/14-mobile-courses.png`, fullPage: false });

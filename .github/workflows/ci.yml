@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -66,6 +69,26 @@ jobs:
         with:
           name: evidence
           path: evidence/
+
+      - name: Publish evidence to the ci-evidence branch
+        if: always() && github.ref == 'refs/heads/main'
+        run: |
+          {
+            echo "commit: $GITHUB_SHA"
+            echo "run: $GITHUB_RUN_ID"
+            echo "date: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "runner: $(uname -sr), $(nproc) CPU cores, $(free -m | awk '/Mem:/{print $2}') MB RAM"
+            echo "java: $(java -version 2>&1 | head -1)"
+            echo "maven: $(mvn -v 2>/dev/null | head -1)"
+          } > evidence/meta.txt
+          rm -rf /tmp/pub && mkdir /tmp/pub && cp -r evidence/. /tmp/pub/
+          cd /tmp/pub
+          git init -q -b ci-evidence
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -q -m "CI evidence for $GITHUB_SHA"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-evidence
 
       - name: Show server log on failure
         if: failure()
