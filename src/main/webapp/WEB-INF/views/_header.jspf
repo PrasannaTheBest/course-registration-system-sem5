@@ -1,0 +1,50 @@
+<%-- Shared header. The including page must declare the JSTL core taglib (prefix c) and set pageTitle. --%>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><c:out value="${pageTitle}"/> | Course Registration</title>
+    <link rel="stylesheet" href="${ctx}/css/style.css">
+</head>
+<body>
+<header class="nav">
+    <div class="container nav-inner">
+        <a class="brand" href="${ctx}/">&#127891; CourseReg</a>
+        <nav class="links">
+            <c:choose>
+                <c:when test="${not empty sessionScope.user and sessionScope.user.admin}">
+                    <a href="${ctx}/admin/courses">Manage Courses</a>
+                </c:when>
+                <c:when test="${not empty sessionScope.user}">
+                    <a href="${ctx}/student/courses">Browse Courses</a>
+                    <a href="${ctx}/student/my-courses">My Courses</a>
+                </c:when>
+            </c:choose>
+        </nav>
+        <div class="nav-user">
+            <c:choose>
+                <c:when test="${not empty sessionScope.user}">
+                    <span class="hello">
+                        <c:out value="${sessionScope.user.name}"/>
+                        <small><c:out value="${sessionScope.user.admin ? 'Admin' : 'Student'}"/></small>
+                    </span>
+                    <form method="post" action="${ctx}/logout" class="inline">
+                        <button type="submit" class="btn btn-light btn-sm">Log out</button>
+                    </form>
+                </c:when>
+                <c:otherwise>
+                    <a class="btn btn-light btn-sm" href="${ctx}/login">Log in</a>
+                    <a class="btn btn-primary btn-sm" href="${ctx}/register">Register</a>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
+</header>
+<main class="container">
+    <c:if test="${not empty sessionScope.flash}">
+        <div class="alert ${sessionScope.flashType}"><c:out value="${sessionScope.flash}"/></div>
+        <c:remove var="flash" scope="session"/>
+        <c:remove var="flashType" scope="session"/>
+    </c:if>
