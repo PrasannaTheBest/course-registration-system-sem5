@@ -1,0 +1,9 @@
+Concurrency test: 30 students competing for 10 seats at http://localhost:8080
+  students competing        : 30
+  seats available           : 10
+  enrolled (success message): 10
+  rejected as full          : 20
+  other outcome             : 0
+  rows in database (admin)  : 10
+  all requests finished in  : 197 ms
+RESULT: PASS - exactly 10 students enrolled, no overbooking

@@ -1,0 +1,4 @@
+Latency test: 200 sequential requests per page against http://localhost:8080
+  Course catalogue (admin)     /admin/courses         n=200  avg=1.4 ms  median=1.3 ms  p95=2.0 ms  max=3.1 ms
+  Course search                /admin/courses         n=200  avg=1.1 ms  median=1.1 ms  p95=1.5 ms  max=1.8 ms
+  Login page (public)          /login                 n=200  avg=0.5 ms  median=0.5 ms  p95=0.7 ms  max=0.9 ms

@@ -1,0 +1,53 @@
+Smoke testing http://localhost:8080
+== Public pages
+  PASS  home page renders
+  PASS  login page returns 200
+  PASS  register page returns 200
+  PASS  stylesheet is served
+  PASS  script is served
+  PASS  unknown URL returns 404
+== Access control and CSRF
+  PASS  anonymous /student/courses redirects
+  PASS  anonymous /admin/courses redirects
+  PASS  POST without CSRF token is rejected
+  PASS  rejected POST explains why
+== Registration
+  PASS  student registers (UTF-8 name)
+  PASS  duplicate email is rejected
+  PASS  short password is rejected
+  PASS  password mismatch is rejected
+  PASS  bad email is rejected
+== Login
+  PASS  wrong password is rejected
+  PASS  student logs in
+== Student: browse, search, enrol, drop
+  PASS  seeded courses are listed
+  PASS  search finds a course
+  PASS  search filters others
+  PASS  empty search says so
+  PASS  enrol succeeds
+  PASS  double enrol is blocked
+  PASS  My Courses lists it
+  PASS  credits are summed
+  PASS  drop succeeds
+  PASS  empty My Courses page
+== Admin: course management
+  PASS  student cannot open admin pages
+  PASS  admin logs in
+  PASS  dashboard shows stats
+  PASS  invalid seats rejected
+  PASS  course is added
+  PASS  duplicate code rejected
+  PASS  new course appears in the table
+== Seat limit (1 seat, two students)
+  PASS  first student takes the seat
+  PASS  second student is told it is full
+  PASS  admin sees the enrolled student
+  PASS  UTF-8 name round-trips
+  PASS  full-course student not listed
+== Cleanup and logout
+  PASS  course is deleted
+  PASS  deleted course is gone
+  PASS  logged-out session is redirected
+
+Result: 42 passed, 0 failed
