@@ -115,6 +115,9 @@ form.inline { display: inline; margin: 0; }
 .instructor { margin: 2px 0 10px; font-size: 0.9rem; }
 .desc { flex: 1; font-size: 0.92rem; color: #4b5563; margin: 0 0 16px; }
 .course-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 14px; }
+.meter { height: 6px; background: #e5e7eb; border-radius: 999px; overflow: hidden; margin-bottom: 12px; }
+.meter-fill { height: 100%; background: var(--primary); border-radius: 999px; }
+.meter-full { background: var(--danger); }
 .seats { font-size: 0.85rem; color: var(--ok); font-weight: 600; }
 .seats-full { color: var(--danger); }
 .badge { font-size: 0.85rem; font-weight: 600; padding: 5px 10px; border-radius: 999px; }

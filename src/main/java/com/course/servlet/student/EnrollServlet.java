@@ -41,6 +41,10 @@ public class EnrollServlet extends HttpServlet {
                 case ALREADY_ENROLLED:
                     Flash.error(req, "You are already enrolled in this course.");
                     break;
+                case CREDIT_LIMIT:
+                    Flash.error(req, "Credit limit reached: you can register for at most "
+                            + EnrollmentDAO.MAX_CREDITS + " credits. Drop a course first.");
+                    break;
                 default:
                     Flash.error(req, "That course no longer exists.");
             }

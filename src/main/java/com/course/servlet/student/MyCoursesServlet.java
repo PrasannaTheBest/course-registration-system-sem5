@@ -25,6 +25,7 @@ public class MyCoursesServlet extends HttpServlet {
             int totalCredits = mine.stream().mapToInt(Course::getCredits).sum();
             req.setAttribute("courses", mine);
             req.setAttribute("totalCredits", totalCredits);
+            req.setAttribute("maxCredits", EnrollmentDAO.MAX_CREDITS);
         } catch (SQLException e) {
             throw new ServletException(e);
         }

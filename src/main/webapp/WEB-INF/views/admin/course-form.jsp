@@ -16,6 +16,7 @@
     </c:if>
 
     <form method="post" action="${ctx}/admin/course-form">
+    <input type="hidden" name="_csrf" value="${sessionScope.csrfToken}">
         <input type="hidden" name="id" value="${course.id}">
 
         <div class="row">

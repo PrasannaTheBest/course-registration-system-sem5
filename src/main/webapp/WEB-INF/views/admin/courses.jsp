@@ -42,6 +42,7 @@
                             <a class="btn btn-light btn-sm" href="${ctx}/admin/course-form?id=${c.id}">Edit</a>
                             <form method="post" action="${ctx}/admin/course-delete" class="inline"
                                   onsubmit="return confirm('Delete this course and all its enrolments?');">
+    <input type="hidden" name="_csrf" value="${sessionScope.csrfToken}">
                                 <input type="hidden" name="id" value="${c.id}">
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>

@@ -35,11 +35,15 @@ class EnrollmentDaoTest {
     }
 
     private int newCourse(String code, int seats) throws Exception {
+        return newCourse(code, seats, 3);
+    }
+
+    private int newCourse(String code, int seats, int credits) throws Exception {
         Course c = new Course();
         c.setCode(code);
         c.setTitle("Title " + code);
         c.setInstructor("Prof X");
-        c.setCredits(3);
+        c.setCredits(credits);
         c.setSeats(seats);
         assertTrue(courses.save(c));
         return courses.search(code).get(0).getId();
@@ -103,6 +107,22 @@ class EnrollmentDaoTest {
         // dropping frees a seat again
         assertTrue(enrollments.drop(s1, c));
         assertEquals(Result.ENROLLED, enrollments.enroll(s3, c));
+    }
+
+    @Test
+    void creditLimitIsEnforced() throws Exception {
+        int s = newStudent("credits@example.com");
+        // 4 courses x 6 credits = exactly 24 credits, which is allowed
+        for (int i = 1; i <= 4; i++) {
+            assertEquals(Result.ENROLLED, enrollments.enroll(s, newCourse("CRD10" + i, 10, 6)));
+        }
+        int extra = newCourse("CRD105", 10, 1);
+        assertEquals(Result.CREDIT_LIMIT, enrollments.enroll(s, extra));
+
+        // dropping a course makes room again
+        int first = enrollments.coursesForUser(s).get(0).getId();
+        assertTrue(enrollments.drop(s, first));
+        assertEquals(Result.ENROLLED, enrollments.enroll(s, extra));
     }
 
     @Test

@@ -16,6 +16,7 @@
     </c:if>
 
     <form method="post" action="${ctx}/register">
+    <input type="hidden" name="_csrf" value="${sessionScope.csrfToken}">
         <label for="name">Full name</label>
         <input type="text" id="name" name="name" value="<c:out value='${name}'/>" maxlength="100" required autofocus>
 

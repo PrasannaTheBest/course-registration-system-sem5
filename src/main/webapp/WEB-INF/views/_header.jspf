@@ -31,6 +31,7 @@
                         <small><c:out value="${sessionScope.user.admin ? 'Admin' : 'Student'}"/></small>
                     </span>
                     <form method="post" action="${ctx}/logout" class="inline">
+    <input type="hidden" name="_csrf" value="${sessionScope.csrfToken}">
                         <button type="submit" class="btn btn-light btn-sm">Log out</button>
                     </form>
                 </c:when>

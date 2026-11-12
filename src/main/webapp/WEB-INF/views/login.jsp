@@ -12,6 +12,7 @@
     </c:if>
 
     <form method="post" action="${ctx}/login">
+    <input type="hidden" name="_csrf" value="${sessionScope.csrfToken}">
         <label for="email">Email</label>
         <input type="email" id="email" name="email" value="<c:out value='${email}'/>" required autofocus>
 

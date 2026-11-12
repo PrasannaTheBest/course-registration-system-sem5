@@ -17,18 +17,23 @@ import java.util.Set;
 
 public class EnrollmentDAO {
 
-    public enum Result { ENROLLED, FULL, ALREADY_ENROLLED, COURSE_NOT_FOUND }
+    /** A student may register for at most this many credits in total. */
+    public static final int MAX_CREDITS = 24;
+
+    public enum Result { ENROLLED, FULL, ALREADY_ENROLLED, CREDIT_LIMIT, COURSE_NOT_FOUND }
 
     /**
      * Enrols a student in a course inside one transaction. The course row is locked
      * (SELECT ... FOR UPDATE) so two students can never take the last seat at once.
+     * Rules checked: course exists, not already enrolled, seats left, credit limit.
      */
     public Result enroll(int userId, int courseId) throws SQLException {
         try (Connection c = DBUtil.getConnection()) {
             c.setAutoCommit(false);
             try {
                 int seats;
-                try (PreparedStatement ps = c.prepareStatement("SELECT seats FROM courses WHERE id = ? FOR UPDATE")) {
+                int credits;
+                try (PreparedStatement ps = c.prepareStatement("SELECT seats, credits FROM courses WHERE id = ? FOR UPDATE")) {
                     ps.setInt(1, courseId);
                     try (ResultSet rs = ps.executeQuery()) {
                         if (!rs.next()) {
@@ -36,6 +41,7 @@ public class EnrollmentDAO {
                             return Result.COURSE_NOT_FOUND;
                         }
                         seats = rs.getInt(1);
+                        credits = rs.getInt(2);
                     }
                 }
                 if (count(c, "SELECT COUNT(*) FROM enrollments WHERE user_id = ? AND course_id = ?", userId, courseId) > 0) {
@@ -45,6 +51,12 @@ public class EnrollmentDAO {
                 if (count(c, "SELECT COUNT(*) FROM enrollments WHERE course_id = ?", courseId) >= seats) {
                     c.rollback();
                     return Result.FULL;
+                }
+                int currentCredits = count(c, "SELECT COALESCE(SUM(c.credits), 0) FROM enrollments e "
+                        + "JOIN courses c ON c.id = e.course_id WHERE e.user_id = ?", userId);
+                if (currentCredits + credits > MAX_CREDITS) {
+                    c.rollback();
+                    return Result.CREDIT_LIMIT;
                 }
                 try (PreparedStatement ps = c.prepareStatement(
                         "INSERT INTO enrollments (user_id, course_id) VALUES (?, ?)")) {

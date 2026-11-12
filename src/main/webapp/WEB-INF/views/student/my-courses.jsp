@@ -9,7 +9,7 @@
         <h1>My courses</h1>
         <p class="muted">Courses you are registered for this semester.</p>
     </div>
-    <div class="stat-inline"><strong>${totalCredits}</strong><span>total credits</span></div>
+    <div class="stat-inline"><strong>${totalCredits} / ${maxCredits}</strong><span>credits registered</span></div>
 </div>
 
 <c:choose>
@@ -36,6 +36,7 @@
                         <td class="right">
                             <form method="post" action="${ctx}/student/drop" class="inline"
                                   onsubmit="return confirm('Drop this course?');">
+    <input type="hidden" name="_csrf" value="${sessionScope.csrfToken}">
                                 <input type="hidden" name="courseId" value="${c.id}">
                                 <button type="submit" class="btn btn-danger btn-sm">Drop</button>
                             </form>
