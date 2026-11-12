@@ -32,7 +32,7 @@ MVC structure, no frameworks.
 
 **Students**
 - Sign up and log in
-- Browse all courses with live seat availability and a seat-fill bar
+- Browse all courses with live seat availability and an animated seat-fill bar
 - Search by course code, title or instructor
 - Enrol in a course and drop it again
 - "My Courses" page with enrolment dates and a credit counter (`n / 24`)
@@ -41,6 +41,11 @@ MVC structure, no frameworks.
 - Dashboard with totals for courses, students and enrolments
 - Add, edit and delete courses (with validation)
 - See exactly which students are enrolled in each course
+
+**Interface**
+- Smooth page-load animations: fading cards that appear one after another, animated seat bars and count-up numbers
+- Hover lift on cards and buttons, loading spinner on submit buttons (stops double clicks), messages that fade away on their own
+- Respects the operating system's "reduce motion" setting; plain CSS plus a small `app.js`, no libraries
 
 ## Tech stack
 
@@ -241,7 +246,7 @@ bash scripts/smoke-test.sh      # end-to-end HTTP test, about 40 checks
     │   │   └── util/               DBUtil, PasswordUtil, Flash
     │   ├── resources/              schema.sql, db.properties
     │   └── webapp
-    │       ├── index.jsp, css/style.css
+    │       ├── index.jsp, css/style.css, js/app.js
     │       └── WEB-INF/            web.xml and views/ (JSP pages, hidden from direct access)
     └── test/java/com/course        EnrollmentDaoTest
 ```

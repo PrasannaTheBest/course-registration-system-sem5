@@ -62,7 +62,7 @@ public class CsrfFilter implements Filter {
                 resp.sendRedirect(req.getContextPath() + "/login");
                 return;
             }
-        } else if (!req.getRequestURI().startsWith(req.getContextPath() + "/css/")) {
+        } else if (!isStaticAsset(req)) {
             HttpSession session = req.getSession(true);
             if (session.getAttribute(ATTR) == null) {
                 byte[] bytes = new byte[32];
@@ -71,5 +71,11 @@ public class CsrfFilter implements Filter {
             }
         }
         chain.doFilter(request, response);
+    }
+
+    private static boolean isStaticAsset(HttpServletRequest req) {
+        String uri = req.getRequestURI();
+        String ctx = req.getContextPath();
+        return uri.startsWith(ctx + "/css/") || uri.startsWith(ctx + "/js/");
     }
 }

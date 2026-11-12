@@ -159,3 +159,93 @@ tbody tr:hover { background: #fafafa; }
     .search input { min-width: 0; flex: 1; }
     .search { width: 100%; }
 }
+
+/* ===================== Animations ===================== */
+@keyframes fade-up   { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes fade-in   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slide-down { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+@keyframes pop-in    { 0% { opacity: 0; transform: scale(0.85); } 70% { transform: scale(1.04); } 100% { opacity: 1; transform: none; } }
+@keyframes grow      { from { width: 0; } }
+@keyframes spin      { to { transform: rotate(360deg); } }
+@keyframes float     { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes shimmer   { to { background-position: 200% center; } }
+
+main.container { animation: fade-in 0.35s ease both; }
+.page-head, .auth-card, .form-card { animation: fade-up 0.45s ease both; }
+
+/* Staggered entrance for course cards and stat tiles */
+.grid .course, .stats .stat, .features .card {
+    animation: fade-up 0.5s ease both;
+    animation-delay: calc(var(--i, 0) * 70ms);
+}
+.stats .stat:nth-child(1) { --i: 1; }
+.stats .stat:nth-child(2) { --i: 2; }
+.stats .stat:nth-child(3) { --i: 3; }
+.features .card:nth-child(1) { --i: 2; }
+.features .card:nth-child(2) { --i: 3; }
+.features .card:nth-child(3) { --i: 4; }
+
+/* Hover effects */
+.course, .stat, .features .card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+.course:hover, .stat:hover, .features .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(79, 70, 229, 0.12);
+    border-color: #c7d2fe;
+}
+.btn { transition: background 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease; }
+.btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); }
+.btn:active:not(:disabled) { transform: translateY(0) scale(0.97); }
+.links a { position: relative; transition: background 0.15s ease, color 0.15s ease; }
+.links a::after {
+    content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 2px;
+    background: #818cf8; transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
+}
+.links a:hover::after { transform: scaleX(1); }
+input, textarea { transition: border-color 0.15s ease, box-shadow 0.15s ease; }
+input:focus, textarea:focus { box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15); outline: none; }
+
+/* Seat meter fills up when the card appears */
+.meter-fill { width: var(--w, 0); animation: grow 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: 0.25s; }
+
+/* Messages */
+.alert { animation: slide-down 0.35s ease both; cursor: pointer; transition: opacity 0.4s ease, transform 0.4s ease; }
+.alert-hide { opacity: 0; transform: translateY(-8px); }
+.badge-ok { animation: pop-in 0.4s ease both; }
+
+/* Table rows fade in one after another */
+tbody tr { animation: fade-in 0.4s ease both; }
+tbody tr:nth-child(1) { animation-delay: 0.05s; }
+tbody tr:nth-child(2) { animation-delay: 0.10s; }
+tbody tr:nth-child(3) { animation-delay: 0.15s; }
+tbody tr:nth-child(4) { animation-delay: 0.20s; }
+tbody tr:nth-child(5) { animation-delay: 0.25s; }
+tbody tr:nth-child(n+6) { animation-delay: 0.30s; }
+tbody tr { transition: background 0.15s ease; }
+
+/* Home page hero */
+.hero h1 {
+    background: linear-gradient(90deg, #4f46e5, #9333ea, #4f46e5);
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    animation: shimmer 6s linear infinite;
+}
+.hero p { animation: fade-up 0.6s 0.15s ease both; }
+.hero-actions { animation: fade-up 0.6s 0.3s ease both; }
+.brand span, .brand { display: inline-block; }
+.brand:hover { animation: float 1s ease-in-out infinite; }
+
+/* Loading state for submit buttons */
+.btn.is-loading { position: relative; color: transparent !important; pointer-events: none; }
+.btn.is-loading::after {
+    content: ""; position: absolute; top: 50%; left: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+    border: 2px solid rgba(255, 255, 255, 0.4); border-top-color: #fff; border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+.btn-light.is-loading::after, .btn-danger.is-loading::after { border-color: rgba(0, 0, 0, 0.15); border-top-color: #4f46e5; }
+
+/* Respect users who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .meter-fill { width: var(--w, 0); }
+}

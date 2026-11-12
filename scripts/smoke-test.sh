@@ -58,6 +58,7 @@ contains "home page renders"      "$(get "$WORK/anon.jar" /)"          "Register
 equals   "login page returns 200" "$(code "$WORK/anon.jar" /login)"    200
 equals   "register page returns 200" "$(code "$WORK/anon.jar" /register)" 200
 equals   "stylesheet is served"   "$(code "$WORK/anon.jar" /css/style.css)" 200
+equals   "script is served"       "$(code "$WORK/anon.jar" /js/app.js)" 200
 equals   "unknown URL returns 404" "$(code "$WORK/anon.jar" /no-such-page)" 404
 
 echo "== Access control and CSRF"

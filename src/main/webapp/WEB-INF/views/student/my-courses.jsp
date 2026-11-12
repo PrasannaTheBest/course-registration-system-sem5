@@ -9,7 +9,7 @@
         <h1>My courses</h1>
         <p class="muted">Courses you are registered for this semester.</p>
     </div>
-    <div class="stat-inline"><strong>${totalCredits} / ${maxCredits}</strong><span>credits registered</span></div>
+    <div class="stat-inline"><strong><span data-count="${totalCredits}">${totalCredits}</span> / ${maxCredits}</strong><span>credits registered</span></div>
 </div>
 
 <c:choose>

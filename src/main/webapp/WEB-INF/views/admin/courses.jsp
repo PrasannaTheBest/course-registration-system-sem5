@@ -12,9 +12,9 @@
 </div>
 
 <div class="stats">
-    <div class="card stat"><strong>${stats.courses}</strong><span>Courses</span></div>
-    <div class="card stat"><strong>${stats.students}</strong><span>Registered students</span></div>
-    <div class="card stat"><strong>${stats.enrollments}</strong><span>Enrolments</span></div>
+    <div class="card stat"><strong data-count="${stats.courses}">${stats.courses}</strong><span>Courses</span></div>
+    <div class="card stat"><strong data-count="${stats.students}">${stats.students}</strong><span>Registered students</span></div>
+    <div class="card stat"><strong data-count="${stats.enrollments}">${stats.enrollments}</strong><span>Enrolments</span></div>
 </div>
 
 <c:choose>

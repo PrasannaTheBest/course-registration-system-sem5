@@ -21,8 +21,8 @@
     </c:when>
     <c:otherwise>
         <div class="grid">
-            <c:forEach var="c" items="${courses}">
-                <article class="card course">
+            <c:forEach var="c" items="${courses}" varStatus="st">
+                <article class="card course" style="--i: ${st.index}">
                     <div class="course-top">
                         <span class="code"><c:out value="${c.code}"/></span>
                         <span class="chip"><c:out value="${c.credits}"/> credits</span>
@@ -31,7 +31,7 @@
                     <p class="muted instructor">&#128100; <c:out value="${c.instructor}"/></p>
                     <p class="desc"><c:out value="${c.description}"/></p>
                     <div class="meter" title="${c.enrolled} of ${c.seats} seats taken">
-                        <div class="meter-fill ${c.full ? 'meter-full' : ''}" style="width: ${(c.enrolled * 100) div c.seats}%"></div>
+                        <div class="meter-fill ${c.full ? 'meter-full' : ''}" style="--w: ${(c.enrolled * 100) div c.seats}%"></div>
                     </div>
                     <div class="course-bottom">
                         <span class="seats ${c.full ? 'seats-full' : ''}">
